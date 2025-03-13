@@ -1,5 +1,6 @@
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -19,9 +20,15 @@ public class Player extends Entity
         screenX=gp.ScreenWidth/2 -(gp.tileSize/2);
         screenY=gp.ScreenHeight/2 - (gp.tileSize/2);
 
+        solidArea=new Rectangle();
+        solidArea.x=8;
+        solidArea.y=16;
+        solidArea.width=32;
+        solidArea.height=32;
+
         setDefaultValues();
         getPlayerImage();
-        direction="down";
+        //direction="down";
 
     }
 
@@ -59,30 +66,46 @@ public class Player extends Entity
             {
                 direction="up";
                 //if (worldY - speed >= 0) { 
-                    worldY -= speed;
+                    //worldY -= speed;
                 //}
             }
             if(keyH.downPressed==true)
             {
                 direction="down";
                 //if (worldY + speed <= gp.ScreenHeight - gp.tileSize) { 
-                    worldY += speed;
+                   // worldY += speed;
                 //}
             }
              if(keyH.leftPressed==true)
             {
                 direction="left";
                 //if (worldX - speed >= 0) { 
-                    worldX -= speed;
+                   // worldX -= speed;
                 //}
             }
             if(keyH.rightPressed==true)
             {
                 direction="right";
                 //if (worldX + speed <= gp.ScreenWidth - gp.tileSize) {
-                    worldX += speed;
+                   // worldX += speed;
                 //}
             }
+
+            collisionOn=false;
+            gp.cChecker.checkTile(this);
+
+            if(collisionOn==false)
+            {
+                switch(direction)
+                {
+                    case "up": worldY -= speed; break;
+                    case "down": worldY += speed; break;
+
+                    case "left": worldX -= speed; break;
+                    case "right":worldX += speed; break;
+                }
+            }
+
             spriteCounter++;
             if(spriteCounter>12)
             {
